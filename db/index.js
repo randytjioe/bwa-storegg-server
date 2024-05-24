@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const { urlDb } = require("../config");
 
 mongoose.connect(urlDb, {
-  useUnifiedTopology: true,
-
-  useNewUrlParser: true,
+  // useUnifiedTopology: true,
+  // useNewUrlParser: true
 });
 
 const db = mongoose.connection;
