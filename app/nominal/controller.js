@@ -9,6 +9,8 @@ module.exports = {
       res.render("admin/nominal/view_nominal", {
         nominal,
         alert,
+        name: req.session.user.name,
+        title: "Halaman Nominal",
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -18,7 +20,10 @@ module.exports = {
   },
   viewCreate: (req, res) => {
     try {
-      res.render("admin/nominal/create");
+      res.render("admin/nominal/create", {
+        name: req.session.user.name,
+        title: "Halaman Tamnbah Nominal",
+      });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
@@ -45,6 +50,8 @@ module.exports = {
       const nominal = await Nominal.findOne({ _id: id });
       res.render("admin/nominal/edit", {
         nominal,
+        name: req.session.user.name,
+        title: "Halaman Edit Nominal",
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -60,6 +67,8 @@ module.exports = {
         { _id: id },
         { coinName, coinQuantity, price }
       );
+       req.flash("alertMessage", "Berhasil edit nominal");
+       req.flash("alertStatus", "success");
       res.redirect("/nominal");
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -71,6 +80,8 @@ module.exports = {
     try {
       const { id } = req.params;
       await Nominal.findOneAndDelete({ _id: id });
+       req.flash("alertMessage", "Berhasil hapus nominal");
+       req.flash("alertStatus", "success");
       res.redirect("/nominal");
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);

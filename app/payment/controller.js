@@ -1,89 +1,95 @@
-const Category = require("./model");
+const Payment = require("./model");
+const Bank = require("../bank/model");
 module.exports = {
   index: async (req, res) => {
     try {
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
       const alert = { message: alertMessage, status: alertStatus };
-      const category = await Category.find();
-      res.render("admin/category/view_category", {
-        category,
+
+      const payment = await Payment.find().populate("banks");
+      res.render("admin/payment/view_payment", {
+        payment,
         alert,
         name: req.session.user.name,
-        title: "Halaman Kategori",
+        title: "Halaman Jenis Pembayaran",
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/payment");
     }
   },
-  viewCreate: (req, res) => {
+  viewCreate: async (req, res) => {
     try {
-      res.render("admin/category/create", {
+      const banks = await Bank.find();
+      res.render("admin/payment/create", {
+        banks,
         name: req.session.user.name,
-        title: "Halaman Tambah Kategori",
+        title: "Halaman Tambah Jenis Pembayaran",
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/payment");
     }
   },
   actionCreate: async (req, res) => {
     try {
-      const { name } = req.body;
-      let category = await Category({ name });
-      await category.save();
-      req.flash("alertMessage", "Berhasil tambah kategori");
+      const { banks, type } = req.body;
+      let payment = await Payment({ banks, type });
+      await payment.save();
+      req.flash("alertMessage", "Berhasil tambah payment");
       req.flash("alertStatus", "success");
-      res.redirect("/category");
+      res.redirect("/payment");
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/payment");
     }
   },
   viewEdit: async (req, res) => {
     try {
       const { id } = req.params;
-      const category = await Category.findOne({ _id: id });
-      res.render("admin/category/edit", {
-        category,
+      const payment = await Payment.findOne({ _id: id }).populate("banks");
+      const banks = await Bank.find();
+      res.render("admin/payment/edit", {
+        payment,
+        banks,
         name: req.session.user.name,
-        title: "Halaman Edit Kategori",
+        title: "Halaman Edit Jenis Pembayaran",
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/payment");
     }
   },
   actionEdit: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name } = req.body;
-      await Category.findOneAndUpdate({ _id: id }, { name });
-      req.flash("alertMessage", "Berhasil ubah kategori");
+      const { banks, type } = req.body;
+      await Payment.findOneAndUpdate({ _id: id }, { banks, type });
+      req.flash("alertMessage", "Berhasil ubah payment");
       req.flash("alertStatus", "success");
-      res.redirect("/category");
+      res.redirect("/payment");
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/payment");
     }
   },
   actionDelete: async (req, res) => {
     try {
       const { id } = req.params;
-      await Category.findOneAndDelete({ _id: id });
-      req.flash("alertMessage", "Berhasil hapus kategori");
+      await Payment.findOneAndDelete({ _id: id });
+      req.flash("alertMessage", "Berhasil hapus payment");
       req.flash("alertStatus", "success");
-      res.redirect("/category");
+      res.redirect("/payment");
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
       req.flash("alertStatus", "danger");
-      res.redirect("/category");
+      res.redirect("/payment");
     }
   },
 };
