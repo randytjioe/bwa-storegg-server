@@ -48,13 +48,13 @@ let transactionSchema = mongoose.Schema(
       type: String,
       require: [true, "nama akun harus dissi"],
       maxlength: [255, "panjang nama harus antara 3-255 karakter"],
-      minlength: [255, "panjang nama harus antara 3-255 karakter"],
+      minlength: [3, "panjang nama harus antara 3-255 karakter"],
     },
     accountUser: {
       type: String,
       require: [true, "nama akun harus dissi"],
       maxlength: [255, "panjang nama harus antara 3-255 karakter"],
-      minlength: [255, "panjang nama harus antara 3-255 karakter"],
+      minlength: [3, "panjang nama harus antara 3-255 karakter"],
     },
     tax: {
       type: Number,
