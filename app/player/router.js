@@ -9,13 +9,13 @@ const {
   historyDetail,
   dashboard,
   profile,
-  editProfile
+  editProfile,
 } = require("./controller");
 const { isLoginPlayer } = require("../middleware/auth");
 const multer = require("multer");
 const os = require("os");
 router.get("/landingpage", landingPage);
-router.get("/detail/:id", detailPage);
+router.get("/:id/detail", detailPage);
 router.get("/category", category);
 router.post("/checkout", isLoginPlayer, checkout);
 router.get("/history", isLoginPlayer, history);

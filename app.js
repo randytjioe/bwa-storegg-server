@@ -31,7 +31,6 @@ app.options("", cors(corsConfig));
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-app.get("/favicon.ico", (req, res) => res.status(204));
 
 app.use(
   session({
