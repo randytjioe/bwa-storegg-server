@@ -12,7 +12,7 @@ const corsConfig = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 };
-app.options("", cors(corsConfig));
+
 const categoryRouter = require("./app/category/router");
 const dashboardRouter = require("./app/dashboard/router");
 const nominalRouter = require("./app/nominal/router");
@@ -25,7 +25,9 @@ const playerRouter = require("./app/player/router");
 const authRouter = require("./app/auth/router");
 const app = express();
 const URL = `/api/v1`;
+
 app.use(cors(corsConfig));
+app.options("", cors(corsConfig));
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
