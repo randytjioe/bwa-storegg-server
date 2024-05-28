@@ -27,7 +27,7 @@ module.exports = {
           try {
             const player = new Player({
               ...payload,
-              thumbnail: filename,
+              avatar: filename,
             });
             await player.save();
             delete player._doc.password;
@@ -81,6 +81,10 @@ module.exports = {
               config.jwtKey
             );
             res.status(200).json({ data: { token } });
+          } else {
+            res
+              .status(403)
+              .json({ message: "password yang anda masukan salah" });
           }
         } else {
           res
